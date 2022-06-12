@@ -1,62 +1,44 @@
 import { useState } from "react";
-import button from "./Components/Button";
 import {logDOM} from "@testing-library/react";
 
-const History = (props) => {
-  if (props.allClicks.length === 0) {
-      return (
-          <div>
-              the app is used by pressing thr buttons
-          </div>
-      )
-  }
-  return (
-      <div>
-          button press history: {props.allClicks.join(' ')}
-      </div>
-  )
-}
-
-const Button = ( {handleClick, text} ) => {
-    return (
-        <button onClick={handleClick}>{text}</button>
-    )
-}
-
 const App = () => {
-    const [left, setLeft] = useState(0)
-    const [right, setRight] = useState(0)
-    const [allClicks, setAll] = useState([])
+    const [good, setGood] = useState(0)
+    const [neutral, setNeutral] = useState(0)
+    const [bad, setBad] = useState(0)
+    const [all, setAll] = useState([])
+    const [average, setAverage] = useState([])
 
-    const [value, setValue] = useState(10)
-
-    const setToValue = (newValue) => () => {
-        console.log(newValue)
-        setValue(newValue)
+    const handleGood = () => {
+        all: setAll(all.concat(1))
+        good: setGood(good + 1)
+        average: setAverage(average.concat(1))
     }
 
-    const handleLeftClick = () => {
-        setAll(allClicks.concat('L'))
-        setLeft(left + 1)
+    const handleNeutral = () => {
+        all: setAll(all.concat(0))
+        neutral: setNeutral(neutral + 1)
     }
 
-    const handleRightClick = () => {
-        setAll(allClicks.concat('R'))
-        setRight(right + 1)
+    const handleBad = () => {
+        all: setAll(all.concat(-1))
+        bad: setBad(bad + 1)
+        average: setAverage(average.concat(-1))
     }
 
     return (
         <div>
-            {left}
-            <Button handleClick={handleLeftClick} text='left' />
-            <Button handleClick={handleRightClick} text='right' />
-            {right}
-            <History allClicks={allClicks} />
+            <h1>give feedback</h1>
+            <button onClick={handleGood} text='good'>good</button>
+            <button onClick={handleNeutral} text='neutral'>neutral</button>
+            <button onClick={handleBad} text='bad'>bad</button>
 
-            {value}
-            <button onClick={setToValue(1000)}>thousand</button>
-            <button onClick={setToValue(0)}>zero</button>
-            <button onClick={setToValue(value + 1)}>increment</button>
+            <h1>statistics</h1>
+            <p>good {good}</p>
+            <p>neutral {neutral}</p>
+            <p>bad {bad}</p>
+            <p>all {all.length}</p>
+            <p>average {average.reduce(function() { return (good - bad) / all.length }, 0)}</p>
+            <p>positive {(good * 100) / all.length} %</p>
         </div>
     )
 }
