@@ -1,5 +1,5 @@
-import { useState } from "react";
-import {logDOM} from "@testing-library/react";
+import React, { useState } from "react";
+import Statistics from "./components/Statistics";
 
 const App = () => {
     const [good, setGood] = useState(0)
@@ -15,12 +15,12 @@ const App = () => {
     }
 
     const handleNeutral = () => {
-        all: setAll(all.concat(0))
+        all: setAll(all.concat(1))
         neutral: setNeutral(neutral + 1)
     }
 
     const handleBad = () => {
-        all: setAll(all.concat(-1))
+        all: setAll(all.concat(1))
         bad: setBad(bad + 1)
         average: setAverage(average.concat(-1))
     }
@@ -32,13 +32,16 @@ const App = () => {
             <button onClick={handleNeutral} text='neutral'>neutral</button>
             <button onClick={handleBad} text='bad'>bad</button>
 
-            <h1>statistics</h1>
-            <p>good {good}</p>
-            <p>neutral {neutral}</p>
-            <p>bad {bad}</p>
-            <p>all {all.length}</p>
-            <p>average {average.reduce(function() { return (good - bad) / all.length }, 0)}</p>
-            <p>positive {(good * 100) / all.length} %</p>
+            
+
+            <Statistics
+                good = {good}
+                neutral = {neutral}
+                bad = {bad}
+                all = {all.length}
+                average = {average.reduce(function() {return (good - bad) / all.length}, 0)}
+                positive = {(good * 100) / all.length}
+            />
         </div>
     )
 }
