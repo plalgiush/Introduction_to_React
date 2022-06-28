@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import RandomBtn from "./components/RandomBtn";
+import PointsBtn from "./components/PointsBtn";
+import MostVote from "./components/MostVote";
 
 const App = () => {
     const anecdotes = [
@@ -13,52 +16,17 @@ const App = () => {
 
     const [selected, setSelected] = useState(0)
     const [points, setPoints] = useState([])
-    const copy = [...points]
-
-    const pointsAnecdote = () => {
-        anecdotes.map((currElement, index) => {
-            if (anecdotes[selected] === currElement) {
-                setPoints(points.concat(index))
-
-                copy[index] += 1
-            }
-        });
-    }
 
 
-    /* Test */
-    // const fullVersionOfCopy = points.reduce((acc, value) => ({
-    //     ...acc,
-    //     [value]: (acc[value] || 0) + 1
-    // }), {})
-
-    const ranks = copy.reduce(function(totals, num) {
-        if (!totals[num]) totals[num] = 0;
-        totals[num]++;
-
-        return totals;
-    }, {});
-
-    let max = 0;
-    Object.keys(ranks).forEach(function(num) {
-        if (ranks[num] > max) {
-            max = num;
-        }
-    });
-
-    const randomAnecdote = () => {
-        selected: setSelected(Math.floor(Math.random() * anecdotes.length))
-    }
 
     return (
         <div>
             <h2>Anecdote of the day</h2>
             <p>{anecdotes[selected]}</p>
-            <button onClick={pointsAnecdote}>vote</button>
-            <button onClick={randomAnecdote} >next anecdote</button>
+            <PointsBtn text={'vote'} anecdotes={anecdotes} points={points} selected={selected} setPoints={setPoints} />
+            <RandomBtn text={'next anecdote'} anecdotes={anecdotes} setSelected={setSelected} />
 
-            <h2>Anecdote with most votes</h2>
-            <p>{anecdotes[max]}</p>
+            <MostVote anecdotes={anecdotes} points={points} />
         </div>
     )
 }
